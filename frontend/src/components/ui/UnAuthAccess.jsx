@@ -1,39 +1,28 @@
-import React from 'react';
-import { Box, Typography, Button, Paper } from '@mui/material';
+import * as React from 'react';
+import { PageContainer } from '@toolpad/core/PageContainer';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Box, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-const UnAuthAccess = () => {
+export default function UnAuthAccess() {
 	const navigate = useNavigate();
-
 	return (
 		<Box
 			sx={{
 				height: '100vh',
 				display: 'flex',
-				direction: 'row',
+				flexDirection: 'column',
 				alignItems: 'center',
 				justifyContent: 'center',
-				bgcolor: 'background.default',
-				p: 2,
+				textAlign: 'center',
+				gap: 2,
+				px: 2,
 			}}>
-			<Typography variant="h4" gutterBottom>
-				403
-			</Typography>
-
-			<Typography variant="h6" gutterBottom>
-				Unauthorized Access
-			</Typography>
-
-			{/* <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-				You do not have permission to access this page.
-			</Typography> */}
-
+			<Typography variant="h4">403 — Unauthorized</Typography>
+			<Typography color="text.secondary">You don’t have permission to view this page.</Typography>
 			<Button variant="contained" onClick={() => navigate('/')}>
-				Go to Home
+				Go Home
 			</Button>
 		</Box>
 	);
-};
-
-export default UnAuthAccess;
+}
