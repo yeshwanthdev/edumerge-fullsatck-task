@@ -18,6 +18,7 @@ app.use(express.json({ limit: rm.config.requestLimit }));
 app.use(require('@middleware/cors'));
 
 //routes
+app.use('/api/dashboard', require('@route/dashboard'));
 app.use('/api/admission', require('@route/admission'));
 app.use('/api/institution', require('@route/institution'));
 app.use('/api/campus', require('@route/campus'));

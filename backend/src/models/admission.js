@@ -10,7 +10,7 @@ const admissionSchema = new mongoose.Schema({
 	email: { type: String, required: true },
 	phone: { type: Number, required: true },
 	seatMatrix: { type: mongoose.Schema.Types.ObjectId, ref: 'SeatMatrix', required: true },
-	acadamicYear: { type: Number, required: true },
+	academicYear: { type: Number, required: true },
 	institution: { type: mongoose.Schema.Types.ObjectId, ref: 'Institution', required: true },
 	campus: { type: mongoose.Schema.Types.ObjectId, ref: 'Campus', required: true },
 	quota: { type: mongoose.Schema.Types.ObjectId, ref: 'Quota', required: true },
@@ -18,21 +18,18 @@ const admissionSchema = new mongoose.Schema({
 	courseType: { type: String, required: true },
 	applicationNumber: { type: String },
 	admissionNumber: { type: String },
-
 	isAdmissionGenerated: { type: Boolean, default: false },
 	isFeePaid: { type: Boolean, default: false },
 	isDocumentVerified: { type: Boolean, default: false },
+	recordStatus: {
+		type: mongoose.Schema.Types.String,
+		enum: [rm.enums.admissionStatus.pending, rm.enums.admissionStatus.completed],
+		default: rm.enums.admissionStatus.pending,
+	},
 
-	// institution
-	//campus
-
-	//quota
-	//applicationNumber  optional
-	//courseType
-
-	//academicYear
-	// documentVerification (boolean)
-	//isAdmissionNumberGenerated default false
+	isFeePaid: { type: Boolean, default: false },
+	seatLockedAt: { type: Date },
+	lockExpiresAt: { type: Date },
 });
 
 module.exports = mongoose.model('Admission', admissionSchema);

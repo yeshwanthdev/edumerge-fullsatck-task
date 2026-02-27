@@ -13,7 +13,7 @@ const routes = {
 			path: 'dashboard',
 			Component: lazy(() =>
 				RM.helper().isAuthorized(RM.commonConfig.arnConstants.DASHBOARD_VIEW)
-					? import('@pages/dashboard')
+					? import('@pages/Dashboard')
 					: unAuthorizedAcessView()
 			),
 		},

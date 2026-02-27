@@ -77,13 +77,9 @@ const ObjectPage = (props) => {
 	const onSubmit = async (values) => {
 		try {
 			// pre checks
-			const totalSeats = values.quotas.reduce((acc, q) => acc + Number(q.seats || 0), 0);
+			const totalSeats = values.quotas.reduce((acc, q) => acc + Number(q.total || 0), 0);
 			if (totalSeats !== Number(values.totalIntake)) {
-				notifications.show('Total seats must equal Total Intake', {
-					severity: 'error',
-					autoHideDuration: 1000,
-					anchorOrigin: { vertical: 'top', horizontal: 'center' },
-				});
+				notifications.show('Total seats must equal Total Intake', { severity: 'error', autoHideDuration: 1000 });
 				return;
 			}
 
@@ -103,7 +99,7 @@ const ObjectPage = (props) => {
 			formMethods.setError('totalIntake', { type: 'manual', message: 'Fill Total Seat Intake before adding a quota' });
 			return;
 		}
-		append({ quota: null, seats: '' });
+		append({ type: null, total: '' });
 	};
 
 	// breadcrums
@@ -156,22 +152,22 @@ const ObjectPage = (props) => {
 									<Grid item size={isEditable ? 5 : 6}>
 										{isEditable ? (
 											<RHAsyncAutoComplete
-												name={`quotas[${index}].quota`}
+												name={`quotas[${index}].type`}
 												label="Quota"
 												apiUrl={`${RM.commonConfig.apiBaseUrl}/quota`}
 												apiMethod="get"
 												getOptionLabel={(option) => option?.name || ''}
 											/>
 										) : (
-											<Label label="Quota" value={values?.quotas?.[index]?.quota?.name ?? '-'} />
+											<Label label="Quota" value={values?.quotas?.[index]?.type?.name ?? '-'} />
 										)}
 									</Grid>
 
 									<Grid item size={isEditable ? 5 : 6}>
 										{isEditable ? (
-											<RHTextField name={`quotas[${index}].seats`} label="Seats" fullWidth />
+											<RHTextField name={`quotas[${index}].total`} label="Seats" fullWidth />
 										) : (
-											<Label label="Seats" value={values?.quotas?.[index]?.seats ?? '-'} />
+											<Label label="Seats" value={values?.quotas?.[index]?.total ?? '-'} />
 										)}
 									</Grid>
 									{isEditable && (

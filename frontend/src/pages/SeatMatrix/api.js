@@ -55,12 +55,11 @@ export const breadcrumbs = [{ title: 'Seat Matrix' }];
 export const columns = [
 	{ field: 'program', headerName: 'Program', width: 200, valueGetter: (value) => value.name },
 	{ field: 'totalIntake', headerName: 'Total Intake', width: 200 },
-	// { field: 'quotas', headerName: 'Quotas', width: 200, valueGetter: (value) => value.name },
 	{
 		field: 'quotas',
 		headerName: 'Quotas',
 		width: 350,
-		valueGetter: (value) => value.quotas?.quotas.map((q) => q.quota?.name).join(', '),
+		valueGetter: (value) => value.quotas?.quotas.map((q) => q.type?.name).join(', '),
 	},
 ];
 
@@ -83,12 +82,11 @@ export const customDataSource = {
 
 //change later min number
 const quotaSchema = yup.object().shape({
-	quota: yup.object().required('Quota is required').nullable(),
-	seats: yup.number().typeError('Seats must be a number').min(0, 'Seats cannot be negative').required('Seats are required'),
+	type: yup.object().required('Quota is required').nullable(),
+	total: yup.number().typeError('Seats must be a number').min(0, 'Seats cannot be negative').required('Seats are required'),
 });
 export const validationSchema = yup.object().shape({
 	program: yup.object().required('Program is required').nullable(),
-	// academicYear: yup.number().typeError('Academic Year must be a number').required('Academic Year is required'),
 	totalIntake: yup
 		.number()
 		.typeError('Total Intake must be a number')
@@ -103,6 +101,7 @@ export const handleSubmit = async (isCreateNewRecord, values) => {
 				program: values.program,
 				totalIntake: values.totalIntake,
 				quotas: values.quotas,
+				quotaStatus: attachQuotaStats(values.quotas),
 				code: RM.uuid(),
 			});
 			return;
@@ -113,8 +112,25 @@ export const handleSubmit = async (isCreateNewRecord, values) => {
 			program: values.program,
 			totalIntake: values.totalIntake,
 			quotas: values.quotas,
+			quotaStatus: attachQuotaStats(values.quotas),
 		});
 	} catch (error) {
 		console.log(error);
 	}
+};
+
+export const attachQuotaStats = (quotas = []) => {
+	const quotaStats = {};
+	quotas.forEach((q) => {
+		const quotaId = q?.type?._id || q?.type;
+
+		if (!quotaId) return;
+
+		quotaStats[quotaId] = {
+			total: Number(q.total) || 0,
+			filled: Number(q.filled) || 0,
+		};
+	});
+
+	return quotaStats;
 };

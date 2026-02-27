@@ -54,13 +54,12 @@ export const updateExistingRecord = async (data) => {
 export const breadcrumbs = [{ title: 'Admission' }];
 export const columns = [
 	{ field: 'firstName', headerName: 'Title', width: 200 },
-	{ field: 'admissionNumber', headerName: 'Admission Number', width: 200 },
+	{ field: 'seatMatrix', headerName: 'Program', width: 200, valueGetter: (value) => value?.program?.name },
 	{ field: 'institution', headerName: 'Institution', width: 200, valueGetter: (value) => value?.name },
-	{ field: 'acadamicYear', headerName: 'Academic Year', width: 200 },
+	{ field: 'academicYear', headerName: 'Academic Year', width: 200 },
 	{ field: 'quota', headerName: 'Quota', width: 200, valueGetter: (value) => value?.name },
-	{ field: 'email', headerName: 'Email', width: 200 },
-	{ field: 'program', headerName: 'Program', width: 200, valueGetter: (value) => value?.name },
-	{ field: 'description', headerName: 'Description', width: 200 },
+	{ field: 'applicationNumber', headerName: 'Application Number', width: 200 },
+	{ field: 'recordStatus', headerName: 'Admission Status', width: 200 },
 ];
 
 export const customDataSource = {
@@ -90,7 +89,7 @@ export const validationSchema = yup.object().shape({
 		.typeError('Phone must be a number')
 		.required('Phone number is required')
 		.test('len', 'Phone must be 10 digits', (val) => val && val.toString().length === 10),
-	acadamicYear: yup
+	academicYear: yup
 		.number()
 		.typeError('Academic year must be a number')
 		.required('Academic year is required')

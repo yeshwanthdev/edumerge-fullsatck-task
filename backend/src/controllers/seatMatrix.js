@@ -7,7 +7,7 @@ const create = async (req, res) => {
 	const responseService = new rm.responseService(req, res);
 
 	try {
-		const { program, totalIntake, quotas, code } = req.body;
+		const data = req.body;
 
 		// // Basic validation
 		// if (!program || !academicYear || !totalIntake || !quotas?.length) {
@@ -24,7 +24,7 @@ const create = async (req, res) => {
 
 		// if (existing) return responseService.badRequest('Seat matrix already exists for this program and academic year');
 
-		const result = await seatMatrixModel.create({ code, program, totalIntake, quotas });
+		const result = await seatMatrixModel.create(data);
 
 		return responseService.success({ message: 'Seat matrix created successfully', data: result.toObject() });
 	} catch (error) {
@@ -41,7 +41,7 @@ const paginate = async (req, res) => {
 		const result = await seatMatrixModel
 			.find({ status: true })
 			.populate('program', 'name code')
-			.populate('quotas.quota', 'name code isGovernmentQuota')
+			.populate('quotas.type', 'name code isGovernmentQuota')
 			.sort({ dateCreated: -1 })
 			.lean();
 
@@ -93,7 +93,7 @@ const getByCode = async (req, res) => {
 		const result = await seatMatrixModel
 			.findOne({ code: code, status: true })
 			.populate('program', 'name code')
-			.populate('quotas.quota', 'name code isGovernmentQuota')
+			.populate('quotas.type', 'name code isGovernmentQuota')
 			.lean();
 		return responseService.success({ message: 'Institutions fetched successfully', data: result });
 	} catch (error) {
