@@ -15,6 +15,7 @@ import DomainIcon from '@mui/icons-material/Domain';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import DonutLargeIcon from '@mui/icons-material/DonutLarge';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 const isDashboardHidden = !RM.helper().isAuthorized(RM.commonConfig.arnConstants.DASHBOARD_VIEW);
 const isAdmissionHidden = !RM.helper().isAuthorized(RM.commonConfig.arnConstants.ADMISSION_VIEW);
@@ -50,7 +51,7 @@ const NAVIGATION = [
 	{
 		segment: 'payment',
 		title: 'Payment',
-		icon: <DescriptionIcon />,
+		icon: <AccountBalanceWalletIcon />,
 		hidden: isAdmissionHidden,
 	},
 	{
