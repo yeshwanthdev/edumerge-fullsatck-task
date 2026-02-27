@@ -48,6 +48,12 @@ const NAVIGATION = [
 		hidden: isAdmissionHidden,
 	},
 	{
+		segment: 'payment',
+		title: 'Payment',
+		icon: <DescriptionIcon />,
+		hidden: isAdmissionHidden,
+	},
+	{
 		kind: 'divider',
 		hidden: isMasterDataHidden || isMainTitleHidden,
 	},

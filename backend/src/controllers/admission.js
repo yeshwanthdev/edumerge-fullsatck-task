@@ -1,6 +1,6 @@
 const rm = require('@root/rm');
 const admissionModel = require('@model/admission.js');
-const { createAdmission } = require('@wrapper/admission');
+const { createAdmission, deleteAdmission } = require('@wrapper/admission');
 
 // create admission
 const create = async (req, res) => {
@@ -10,7 +10,7 @@ const create = async (req, res) => {
 		const result = await createAdmission(data);
 		// const result = await admissionModel.create(data);
 
-		return responseService.success({ message: 'Idmission created successfully', data: [] });
+		return responseService.success({ message: 'Idmission created successfully', data: result });
 	} catch (error) {
 		console.error('Error in creating admission:', error.message);
 		return responseService.serverError(error);
@@ -65,7 +65,7 @@ const remove = async (req, res) => {
 	try {
 		const { code } = req.params;
 
-		const deleted = await admissionModel.updateOne({ code }, { status: false }, { new: true }).lean();
+		const deleted = await deleteAdmission(code);
 
 		return responseService.success({ message: 'Idmission deleted successfully', data: deleted });
 	} catch (error) {

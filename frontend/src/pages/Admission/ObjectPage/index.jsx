@@ -19,7 +19,8 @@ const ObjectPage = (props) => {
 
 	const [isEditable, setIsEditable] = useState(false);
 	const isCreateNewRecord = code === 'createNewRecord';
-	const isEditDisabled = isEditable || !RM.helper().isAuthorized(RM.commonConfig.arnConstants.ADMISSION_EDIT);
+	const isEditHidden = isEditable || !RM.helper().isAuthorized(RM.commonConfig.arnConstants.ADMISSION_EDIT);
+	const isEditDisabled = !isCreateNewRecord;
 
 	const formMethods = useForm({
 		mode: 'onChange',
@@ -50,7 +51,8 @@ const ObjectPage = (props) => {
 		{
 			label: 'edit',
 			variant: 'contained',
-			hidden: isEditDisabled,
+			hidden: isEditHidden,
+			disabled: isEditDisabled,
 			onClick: async () => setIsEditable(true),
 		},
 	];

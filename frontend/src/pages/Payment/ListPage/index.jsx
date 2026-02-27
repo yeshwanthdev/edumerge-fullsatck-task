@@ -4,7 +4,7 @@ import { DataGrid, useGridApiRef } from '@mui/x-data-grid';
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDialogs, useNotifications } from '@toolpad/core';
-import { breadcrumbs, columns, customDataSource, deleteSingleRecord } from '@pages/Admission/api';
+import { breadcrumbs, columns, customDataSource, handleSubmit } from '@pages/Payment/api';
 import { tableStyles } from '@root/utils/constants';
 
 const ListPage = () => {
@@ -14,42 +14,32 @@ const ListPage = () => {
 	const apiRef = useGridApiRef();
 
 	const [selectedRows, setSelectedRows] = useState([]);
-	const isCreateDisabled = !RM.helper().isAuthorized(RM.commonConfig.arnConstants.ADMISSION_CREATE);
-	const isDeleteDisabled = !RM.helper().isAuthorized(RM.commonConfig.arnConstants.ADMISSION_DELETE);
+	const isCreateDisabled = !RM.helper().isAuthorized(RM.commonConfig.arnConstants.ADMISSION_EDIT);
+	console.log('selectedRows', selectedRows);
 
 	// actions
 	const actions = [
 		{
-			label: 'Create',
+			label: 'Update',
 			variant: 'contained',
 			hidden: isCreateDisabled,
-			onClick: async () => navigate('/admission/createNewRecord'),
-		},
-		{
-			label: 'Delete',
-			variant: 'outlined',
-			hidden: isDeleteDisabled,
-			disabled: true, // RM.lodash.isEmpty(selectedRows),
 			onClick: async () => {
 				try {
-					await deleteSingleRecord(selectedRows[0]);
-					apiRef.current?.dataSource.fetchRows();
-					notifications.show('Deleted Successfully', { severity: 'success' });
+					const selectedIds = apiRef.current.getSelectedRows();
+					const selectedRows = Array.from(selectedIds.values());
+					const status = selectedRows[0].recordStatus;
+					if (status === 'COMPLETED') return notifications.show('Admission Completed', { info: 'success' });
+					await handleSubmit(selectedRows[0].code);
+					apiRef.current?.dataSource?.fetchRows();
 				} catch (error) {
 					console.error(error);
-					notifications.show('Deleted Failed', { severity: 'fail' });
 				}
 			},
 		},
 	];
 
-	//handle row click
-	const handleRowClick = (params) => {
-		navigate(`/admission/${params.row.code}`);
-	};
-
 	return (
-		<Page title="Admission" breadcrumbs={breadcrumbs} actions={actions}>
+		<Page title="Payment" breadcrumbs={breadcrumbs} actions={actions}>
 			<DataGrid
 				apiRef={apiRef}
 				columns={columns}
@@ -60,7 +50,6 @@ const ListPage = () => {
 				getRowId={(row) => row.code}
 				checkboxSelection
 				disableMultipleRowSelection
-				onRowClick={handleRowClick}
 				onRowSelectionModelChange={(rows) => setSelectedRows(Array.from(rows.ids))}
 				pageSizeOptions={[10, 20, 50]}
 				sx={tableStyles}

@@ -7,7 +7,7 @@
 			"module": "expiredQuotaCleanup.js",
 			"handler": "handler",
 			"expression": null,
-			"disabled": true,
+			"disabled": false,
 			"runAtEvery": 120
 		}
 	]

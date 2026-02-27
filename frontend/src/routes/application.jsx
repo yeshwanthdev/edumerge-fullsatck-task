@@ -34,6 +34,14 @@ const routes = {
 			),
 		},
 		{
+			path: 'payment',
+			Component: lazy(() =>
+				RM.helper().isAuthorized(RM.commonConfig.arnConstants.ADMISSION_VIEW)
+					? import('@pages/Payment/ListPage')
+					: unAuthorizedAcessView()
+			),
+		},
+		{
 			path: '/institution',
 			Component: lazy(() =>
 				RM.helper().isAuthorized(RM.commonConfig.arnConstants.INSTITUTION_VIEW)

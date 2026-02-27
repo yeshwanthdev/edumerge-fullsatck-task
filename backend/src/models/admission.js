@@ -14,22 +14,19 @@ const admissionSchema = new mongoose.Schema({
 	institution: { type: mongoose.Schema.Types.ObjectId, ref: 'Institution', required: true },
 	campus: { type: mongoose.Schema.Types.ObjectId, ref: 'Campus', required: true },
 	quota: { type: mongoose.Schema.Types.ObjectId, ref: 'Quota', required: true },
-	applicationNumber: { type: String },
 	courseType: { type: String, required: true },
 	applicationNumber: { type: String },
 	admissionNumber: { type: String },
 	isAdmissionGenerated: { type: Boolean, default: false },
-	isFeePaid: { type: Boolean, default: false },
 	isDocumentVerified: { type: Boolean, default: false },
 	recordStatus: {
 		type: mongoose.Schema.Types.String,
 		enum: [rm.enums.admissionStatus.pending, rm.enums.admissionStatus.completed],
 		default: rm.enums.admissionStatus.pending,
 	},
-
 	isFeePaid: { type: Boolean, default: false },
-	seatLockedAt: { type: Date },
-	lockExpiresAt: { type: Date },
+	seatLockedAt: { type: Date, default: rm.utils.UTCDateNow },
+	lockExpiresAt: { type: Date, default: rm.utils.UTCDateNow },
 });
 
 module.exports = mongoose.model('Admission', admissionSchema);
