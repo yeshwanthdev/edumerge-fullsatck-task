@@ -19,7 +19,8 @@ const ObjectPage = (props) => {
 
 	const [isEditable, setIsEditable] = useState(false);
 	const isCreateNewRecord = code === 'createNewRecord';
-	const isEditDisabled = isEditable || !RM.helper().isAuthorized(RM.commonConfig.arnConstants.ADMISSION_EDIT);
+	const isEditHidden = isEditable || !RM.helper().isAuthorized(RM.commonConfig.arnConstants.ADMISSION_EDIT);
+	const isEditDisabled = !isCreateNewRecord;
 
 	const formMethods = useForm({
 		mode: 'onChange',
@@ -50,7 +51,8 @@ const ObjectPage = (props) => {
 		{
 			label: 'edit',
 			variant: 'contained',
-			hidden: isEditDisabled,
+			hidden: isEditHidden,
+			disabled: isEditDisabled,
 			onClick: async () => setIsEditable(true),
 		},
 	];
@@ -93,8 +95,13 @@ const ObjectPage = (props) => {
 	];
 	console.log('values form', values);
 
-	const isGovernmentQuota = Boolean(values?.quota?.quota?.isGovernmentQuota);
+	const isGovernmentQuota = Boolean(values?.quota?.isGovernmentQuota);
 	const isAdmissionGenerated = Boolean(values?.isAdmissionGenerated);
+	const quotaOptions = values?.seatMatrix?.quotas?.map((q) => ({
+		label: q.type.name,
+		value: q.type._id,
+		disabled: q.total === q.filled,
+	}));
 
 	return (
 		<FormProvider {...formMethods}>
@@ -172,11 +179,10 @@ const ObjectPage = (props) => {
 							{isEditable ? (
 								<RHAutoComplete
 									key="type"
-									options={values?.seatMatrix?.quotas || []}
+									options={values?.seatMatrix?.quotas?.map((q) => q.type) || []}
 									name="quota"
 									label="Quota"
-									getOptionLabel={(option) => option?.quota?.name || ''}
-									onChange={(option) => option}
+									getOptionLabel={(option) => option?.name || ''}
 								/>
 							) : (
 								<Label label="Quota" value={values?.quota?.name ?? ''} />
@@ -200,9 +206,9 @@ const ObjectPage = (props) => {
 						</Grid>
 						<Grid size={6}>
 							{isEditable ? (
-								<RHTextField name="acadamicYear" label="Academic year" fullWidth />
+								<RHTextField name="academicYear" label="Academic year" fullWidth />
 							) : (
-								<Label label="Academic year" value={values?.acadamicYear ?? '-'} />
+								<Label label="Academic year" value={values?.academicYear ?? '-'} />
 							)}
 						</Grid>
 						<Grid size={6}>

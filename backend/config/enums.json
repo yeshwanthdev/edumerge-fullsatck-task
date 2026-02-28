@@ -1,1 +1,12 @@
-{}
+{
+	"admissionStatus": {
+		"pending": "PENDING",
+		"completed": "COMPLETED",
+		"expired": "EXPIRED"
+	},
+	"paymentStatus": {
+		"pending": "PENDING",
+		"completed": "COMPLETED",
+		"failed": "FAILED"
+	}
+}

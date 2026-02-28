@@ -13,7 +13,7 @@ const routes = {
 			path: 'dashboard',
 			Component: lazy(() =>
 				RM.helper().isAuthorized(RM.commonConfig.arnConstants.DASHBOARD_VIEW)
-					? import('@pages/dashboard')
+					? import('@pages/Dashboard')
 					: unAuthorizedAcessView()
 			),
 		},
@@ -30,6 +30,14 @@ const routes = {
 			Component: lazy(() =>
 				RM.helper().isAuthorized(RM.commonConfig.arnConstants.ADMISSION_VIEW)
 					? import('@pages/Admission/ObjectPage')
+					: unAuthorizedAcessView()
+			),
+		},
+		{
+			path: 'payment',
+			Component: lazy(() =>
+				RM.helper().isAuthorized(RM.commonConfig.arnConstants.ADMISSION_VIEW)
+					? import('@pages/Payment/ListPage')
 					: unAuthorizedAcessView()
 			),
 		},

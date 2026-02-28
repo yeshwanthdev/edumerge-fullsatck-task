@@ -20,6 +20,7 @@
     "@mui/icons-material": "^7.3.8",
     "@mui/material": "^7.3.8",
     "@mui/styled-engine-sc": "^7.3.8",
+    "@mui/x-charts": "^8.27.0",
     "@mui/x-data-grid": "^8.27.1",
     "@toolpad/core": "^0.16.0",
     "axios": "^1.13.5",

@@ -6,6 +6,7 @@ const express = require('express'),
 	dotenv = require('dotenv'),
 	compression = require('compression'),
 	cookieParser = require('cookie-parser'),
+	cronJob = require('@helper/cronJob'),
 	{ connectDB } = require('@config/db');
 
 dotenv.config();
@@ -18,7 +19,9 @@ app.use(express.json({ limit: rm.config.requestLimit }));
 app.use(require('@middleware/cors'));
 
 //routes
+app.use('/api/dashboard', require('@route/dashboard'));
 app.use('/api/admission', require('@route/admission'));
+app.use('/api/payment', require('@route/payment'));
 app.use('/api/institution', require('@route/institution'));
 app.use('/api/campus', require('@route/campus'));
 app.use('/api/department', require('@route/department'));
@@ -42,6 +45,7 @@ async function startServer() {
 		console.log(`Server running on port ${PORT}`);
 		console.log('------------------------');
 	});
+	cronJob(rm.config.cronJobs);
 }
 
 startServer();

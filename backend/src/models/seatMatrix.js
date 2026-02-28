@@ -6,17 +6,22 @@ const seatMatrixSchema = new mongoose.Schema({
 	...rm.utils.commonSchema,
 
 	program: { type: mongoose.Schema.Types.ObjectId, ref: 'Program', required: true },
-	// academicYear: { type: Number, required: true },
-	totalIntake: { type: Number, required: true, min: 1 },
+	totalIntake: { type: Number, required: true },
 	quotas: [
 		{
-			quota: { type: mongoose.Schema.Types.ObjectId, ref: 'Quota', required: true },
-			seats: { type: Number, required: true, min: 0 },
+			type: { type: mongoose.Schema.Types.ObjectId, ref: 'Quota', required: true },
+			total: { type: Number, required: true },
+			filled: { type: Number, default: 0 },
 		},
 	],
+	quotaStatus: {
+		type: Map,
+		of: {
+			total: { type: Number, required: true },
+			filled: { type: Number, default: 0 },
+		},
+	},
 });
-
-// Prevent duplicate program + academicYear
 
 module.exports = mongoose.model('SeatMatrix', seatMatrixSchema);
 // while creating seat-matrix, when a user selects a program, and year check if theres any record already, to prevent duplication
